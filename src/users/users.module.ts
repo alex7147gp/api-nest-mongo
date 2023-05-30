@@ -1,15 +1,46 @@
 import { Module } from '@nestjs/common';
+import { MongooseModule } from "@nestjs/mongoose"
 
 import { CustomerController } from './controllers/customers.controller';
 import { CustomersService } from './services/customers.service';
 import { UsersController } from './controllers/users.controller';
 import { UsersService } from './services/users.service';
 
+import { UserSchema } from "./entities/user.entity"
+import { CustomerSchema } from "./entities/customer.entity"
+
+import { OrderSchema } from "./entities/order.entity"
+
+
+import { TaskSchema } from "./entities/task.entity"
+
 import { ProductsModule } from '../products/products.module';
+import { OrdersService } from './services/orders.service';
+import { OrdersController } from './controllers/orders.controller';
+
+
 
 @Module({
-  imports: [ProductsModule],
-  controllers: [CustomerController, UsersController],
-  providers: [CustomersService, UsersService],
+  imports: [MongooseModule.forFeature([
+      {
+        name: "User",
+        schema: UserSchema
+      },
+      {
+        name: "Customer",
+        schema: CustomerSchema
+      },
+      {
+        name: "Order",
+        schema: OrderSchema
+      },
+      {
+        name: "Task",
+        schema: TaskSchema
+      }
+    ]
+  ), ProductsModule],
+  controllers: [CustomerController, UsersController, OrdersController],
+  providers: [CustomersService, UsersService, OrdersService],
 })
 export class UsersModule {}
